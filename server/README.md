@@ -1,0 +1,20 @@
+# local.settings.json
+
+```
+{
+  "IsEncrypted": false,
+  "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AzureWebJobsStorage": "",
+    "GITHUB_OAUTH_CLIENT_ID":"",
+    "GITHUB_OAUTH_CLIENT_SECRET":"",
+    "GITHUB_TOKEN_EXCHANGE_URL": "https://github.com/login/oauth/access_token"
+  },
+  "Host": {
+    "LocalHttpPort": 7071,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+  
+}
+```
