@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@octokit/auth-oauth-app": "^5.0.4",
-    "node-fetch": "2.6.7"
+    "node-fetch": "2.6.7",
+    "octokit": "^2.0.10"
   },
   "devDependencies": {
     "@azure/functions": "^3.0.0",

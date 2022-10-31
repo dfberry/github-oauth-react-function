@@ -1,12 +1,15 @@
+import { CONFIG } from './config';
 
 function Login() {
 
+  console.log(CONFIG);
+
   const authentication = {
     provider: "GitHub",
-    clientId: process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID,
-    loginUrl: "https://github.com/login/oauth/authorize",
-    redirectUri: process.env.REACT_APP_CLIENT_CALLBACK
-}
+    clientId: CONFIG.REACT_APP_GITHUB_OAUTH_CLIENT_ID,
+    loginUrl: CONFIG.REACT_APP_GITHUB_LOGIN_URL,
+    redirectUri: CONFIG.REACT_APP_CLIENT_CALLBACK
+  }
 
 const loginUrl = `${authentication.loginUrl}?client_id=${authentication.clientId}&redirect_uri=${encodeURIComponent(authentication.redirectUri)}&scopes=repo`;
 

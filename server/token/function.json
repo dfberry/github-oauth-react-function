@@ -15,5 +15,5 @@
       "name": "res"
     }
   ],
-  "scriptFile": "../dist/githubAuth/index.js"
+  "scriptFile": "../dist/token/index.js"
 }
