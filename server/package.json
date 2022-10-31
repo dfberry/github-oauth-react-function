@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@octokit/auth-oauth-app": "^5.0.4",
+    "@octokit/auth-oauth-user": "^2.0.4",
+    "@octokit/core": "^4.1.0",
     "node-fetch": "2.6.7",
     "octokit": "^2.0.10"
   },

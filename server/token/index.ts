@@ -1,7 +1,8 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import fetch from "node-fetch";
-import { Octokit, App } from "octokit";
 
+import { Octokit } from "@octokit/core";
+import { createOAuthUserAuth } from "@octokit/auth-oauth-user";
 
 const CONFIG = {
   GITHUB_OAUTH_CLIENT_ID: process.env.GITHUB_OAUTH_CLIENT_ID,
@@ -32,54 +33,25 @@ const convertToJson = (querystring)=>{
 const isEmptyString = (data: string): boolean =>
   typeof data === "string" && data.trim().length == 0;
 
-async function getProfile(accessTokenObj) {
-  try{
-    const octokit = new Octokit({ 
-      type: "token",
-      tokenType: "oauth",
-      clientType:"oauth-app",
-      clientId: CONFIG.GITHUB_OAUTH_CLIENT_ID,
-      clientSecret: CONFIG.GITHUB_OAUTH_CLIENT_SECRET,
-      token: accessTokenObj.access_token
-    });
-    const { data } = await octokit.rest.users.getAuthenticated();
-    return data;    
-  } catch(err){
-    console.log(err.message);
-    throw(err);
-  }
-
-}
 
 async function getToken(code) {
-  const config = {
-    clientId: CONFIG.GITHUB_OAUTH_CLIENT_ID,
-    clientSecret: CONFIG.GITHUB_OAUTH_CLIENT_SECRET,
-    tokenExchangeUrl: CONFIG.GITHUB_TOKEN_EXCHANGE_URL,
-  };
 
-  const body = {
-    client_id: config.clientId,
-    client_secret: config.clientSecret,
-    code,
-  };
+  const octokit = new Octokit({
+    authStrategy: createOAuthUserAuth,
+    auth: {
+      clientId: CONFIG.GITHUB_OAUTH_CLIENT_ID,
+      clientSecret: CONFIG.GITHUB_OAUTH_CLIENT_SECRET,
+      code,
+    },
+  });
+// Exchanges the code for the user access token authentication on first request
+// and caches the authentication for successive requests
+const {
+  data
+} = await octokit.request("GET /user");
+console.log("Hello, %s!", data.login);
 
-  const options = {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: { "Content-Type": "application/json" },
-  };
-
-  const fetchResponse = await fetch(config.tokenExchangeUrl, options);
-
-  if (!fetchResponse.ok) {
-    throw new Error("Network response was not OK");
-  }
-  console.log(fetchResponse.status);
-
-  const nameVaulePairData = await fetchResponse.text();
-  const jsonData = convertToJson(nameVaulePairData);
-  return jsonData;
+  return data;
 }
 
 const httpTrigger: AzureFunction = async function (
@@ -92,14 +64,12 @@ const httpTrigger: AzureFunction = async function (
     if (isEmptyString(code)) throw Error("Incoming 'code' is empty");
     console.log(`code ${code}`);
 
-    const accessTokenObj = await getToken(code);
-    console.log(accessTokenObj);
+    const user = await getToken(code);
 
-    const user = await getProfile(accessTokenObj);
     console.log("Request from %s", user.login);
 
     context.res = {
-      body: { accessTokenObj, user },
+      body: { user },
     };
 
     console.log(context.res);

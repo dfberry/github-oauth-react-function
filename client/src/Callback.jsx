@@ -22,7 +22,7 @@ function getData(url, code) {
 
 function Callback() {
   const [loading, setLoading] = useState(false);
-  const [accessToken, setAccessToken] = useState([]);
+  const [user, setUser] = useState([]);
 
 
 
@@ -37,12 +37,13 @@ function Callback() {
 
       setLoading(true);
 
-      const tradeCodeForAccessTokenUrl = process.env.REACT_APP_SERVER_URL || "";
+      const tradeCodeForuserUrl = process.env.REACT_APP_SERVER_URL || "";
 
-      getData(tradeCodeForAccessTokenUrl, code).then((data) => {
+      getData(tradeCodeForuserUrl, code).then((data) => {
         console.log(data);
-        console.log(data.accessToken);
-        setAccessToken(data.accessToken);
+        console.log(data.user);
+        setUser(data.user);
+
         setLoading(false);
       });
       
@@ -54,7 +55,7 @@ function Callback() {
     <div className="App">
       <header className="App-header">
         { loading && "Loading"} 
-        { !loading && (accessToken ? <div>{accessToken}</div> : <div>No access token</div>)}
+        { !loading && (<div>{JSON.stringify(user)}</div>)}
       </header>
     </div>
   );
