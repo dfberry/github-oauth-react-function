@@ -1,4 +1,4 @@
-import { CONFIG } from './config';
+import { CONFIG } from '../utils/config';
 
 function Login() {
 
@@ -12,12 +12,13 @@ function Login() {
   }
 
 const loginUrl = `${authentication.loginUrl}?client_id=${authentication.clientId}&redirect_uri=${encodeURIComponent(authentication.redirectUri)}&scopes=repo`;
+console.log(`loginUrl = ${loginUrl}`)
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div >
+
       <a href={loginUrl} rel="noreferrer">{authentication.provider} Login</a>
-      </header>
+
     </div>
   );
 }
