@@ -5,7 +5,9 @@
     "AzureWebJobsStorage": "",
     "GITHUB_OAUTH_CLIENT_ID":"",
     "GITHUB_OAUTH_CLIENT_SECRET":"",
-    "GITHUB_TOKEN_EXCHANGE_URL": "https://github.com/login/oauth/access_token"
+    "GITHUB_TOKEN_EXCHANGE_URL": "https://github.com/login/oauth/access_token",
+    "AZURE_REDIS_CACHE_HOSTNAME":"YOUR-RESOURCE-NAME.redis.cache.windows.net",
+    "AZURE_REDIS_CACHE_KEY":""
   },
   "Host": {
     "LocalHttpPort": 7071,

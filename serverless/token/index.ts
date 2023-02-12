@@ -1,80 +1,53 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
-import fetch from "node-fetch";
-
-import { Octokit } from "@octokit/core";
-import { createOAuthUserAuth } from "@octokit/auth-oauth-user";
-
-const CONFIG = {
-  GITHUB_OAUTH_CLIENT_ID: process.env.GITHUB_OAUTH_CLIENT_ID,
-  GITHUB_OAUTH_CLIENT_SECRET:process.env.GITHUB_OAUTH_CLIENT_SECRET,
-  GITHUB_TOKEN_EXCHANGE_URL:process.env.GITHUB_TOKEN_EXCHANGE_URL
-}
-
-console.log(CONFIG);
-
-const convertToJson = (querystring)=>{
-
-  const model = querystring.split("&");
-  let json = {};
-
-  for (var x = 0; x < model.length; x++) {
-
-    //break each set into key and value pair
-    var _kv = model[x].split("=");
-
-    console.log(_kv);
-    json[_kv[0]]=_kv[1];
-  }
-  console.log(json);
-  return json;
-}
-
-
-const isEmptyString = (data: string): boolean =>
-  typeof data === "string" && data.trim().length == 0;
-
-
-async function getToken(code) {
-
-  const octokit = new Octokit({
-    authStrategy: createOAuthUserAuth,
-    auth: {
-      clientId: CONFIG.GITHUB_OAUTH_CLIENT_ID,
-      clientSecret: CONFIG.GITHUB_OAUTH_CLIENT_SECRET,
-      code,
-    },
-  });
-// Exchanges the code for the user access token authentication on first request
-// and caches the authentication for successive requests
-const {
-  data
-} = await octokit.request("GET /user");
-console.log("Hello, %s!", data.login);
-
-  return data;
-}
+import { getToken } from "../shared/github-http";
+import { getUser } from "../shared/github-octokit";
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
   try {
-    const code = req?.body?.code ? req?.body?.code : "";
+    const code: string = req?.body?.code ? (req?.body?.code as string) : null;
 
-    if (isEmptyString(code)) throw Error("Incoming 'code' is empty");
-    console.log(`code ${code}`);
+    if (!code) throw Error("Required param `code` not found");
+    context.log(`code ${code}`);
 
-    const user = await getToken(code);
+    const { token, headers } = await getToken(code);
+    const { user } = await getUser(token.access_token);
 
-    console.log("Request from %s", user.login);
+    context.log("Request from %s", JSON.stringify(user.email));
+
+    /*
+    // TBD - store token, headers, user in Redis with key as user email
+    // TBD - return cookie in header without token but with redis id - expires in a week/not a year
+
+    // Set-Cookie:my_cookie=HelloWorld; Path=/; Expires=Wed, 15 Mar 2017 15:59:59 GMT 
+    I used fetch in the client-side code. If you do not specify credentials: 'include' in the fetch options, cookies are neither sent to server nor saved by the browser, even though the server response sets cookies.
+    
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Accept', 'application/json');
+
+    return fetch('/your/server_endpoint', {
+        method: 'POST',
+        mode: 'same-origin',
+        redirect: 'follow',
+        credentials: 'include', // Don't forget to specify this if you need cookies
+        headers: headers,
+        body: JSON.stringify({
+            first_name: 'John',
+            last_name: 'Doe'
+        })
+    })
+    */
 
     context.res = {
-      body: { user },
+      body: { user, headers },
     };
 
-    console.log(context.res);
+    context.log(context.res);
   } catch (err) {
-    console.log(err);
+    context.log(err);
 
     context.res = {
       status: 500,
