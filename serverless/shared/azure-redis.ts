@@ -1,6 +1,12 @@
 import { createClient } from 'redis';
 
-// async function init(connect) {
+// connection string format
+// redis[s]://[[username][:password]@][host][:port][/db-number]:
+
+// client configuration
+// https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
+
+// async function init(config) {
 //   var client = createClient(6380, 
 //     config.AZURE_REDIS_CACHE_HOSTNAME, {
 //         auth_pass: config.AZURE_REDIS_CACHE_KEY,

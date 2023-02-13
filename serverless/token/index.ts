@@ -41,8 +41,9 @@ const httpTrigger: AzureFunction = async function (
     })
     */
 
+    // TBD: Stick token in redis, return id to cache item - headers good for 1 week (not 1 year)
     context.res = {
-      body: { user, headers },
+      body: { token, user, headers },
     };
 
     context.log(context.res);

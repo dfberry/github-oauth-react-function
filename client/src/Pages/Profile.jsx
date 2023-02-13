@@ -1,23 +1,16 @@
-function User({ user }) {
-  console.log(`user component ${JSON.stringify(user)}`);
+import User from "../component/user";
+import { useLocation } from 'react-router-dom';
 
-  const showProperties = ["name", "blog", "location", "bio"];
+function Profile() {
+
+  const { state } = useLocation();
+  console.log(`user component ${JSON.stringify(state)}`);
 
   return (
     <>
-      {Object.keys(user).map((k, idx) => {
-        if (showProperties.includes(k)) {
-          return (
-            <li key={idx}>
-              <strong>{k}</strong>: {user[k]}
-            </li>
-          );
-        } else {
-          return null;
-        }
-      })}
+      <User user={state.user} />
     </>
   );
 }
 
-export default User;
+export default Profile;

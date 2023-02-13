@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+.ul-left {
+  text-align: left;
+}
+
 .flex-parent-element {
   display: flex;
   background-color: grey;

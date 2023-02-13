@@ -2,7 +2,6 @@ import * as React from "react";
 import { useRoutes } from "react-router-dom";
 import ErrorPage from "./component/error-page";
 import Login from "./Pages/Login";
-import Callback from "./Pages/Callback";
 import Profile from "./Pages/Profile";
 import Home from "./Pages/HomePublic";
 import Layout from "./Pages/Layout";
@@ -16,7 +15,7 @@ function NoMatch() {
   );
 }
 
-function AppRouter() {
+function AppRouter({setToken}) {
   const routes = [
     {
       path: "/",
@@ -28,11 +27,11 @@ function AppRouter() {
         },
         {
           path: "/callback",
-          element: <Callback />,
+          element: <Login setToken={setToken}/>,
         },
         {
           path: "/login",
-          element: <Login />,
+          element: <Login setToken={setToken}/>,
         },
         {
           path: "/profile",
