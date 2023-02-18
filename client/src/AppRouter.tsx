@@ -5,6 +5,7 @@ import Login from "./Pages/Login";
 import Profile from "./Pages/Profile";
 import ErrorPage from "./component/error-page";
 import useToken from "./component/useToken";
+import useUser from "./component/useUser";
 import { IAppConfiguration } from "./utils/config";
 
 type IAppRouterProps = {
@@ -12,6 +13,7 @@ type IAppRouterProps = {
 };
 function AppRouter({ configuration }: IAppRouterProps) {
   const { setToken } = useToken();
+  const { user, setUser} = useUser();
 
   const routes = [
     {
@@ -25,18 +27,18 @@ function AppRouter({ configuration }: IAppRouterProps) {
         {
           path: "/callback",
           element: (
-            <Login setToken={setToken} appConfiguration={configuration} />
+            <Login setToken={setToken} setUser={setUser} appConfiguration={configuration} />
           ),
         },
         {
           path: "/login",
           element: (
-            <Login setToken={setToken} appConfiguration={configuration} />
+            <Login setToken={setToken} setUser={setUser} appConfiguration={configuration} />
           ),
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: <Profile user={user}/>,
         },
         { path: "*", element: <Home />, errorElement: <ErrorPage /> },
       ],

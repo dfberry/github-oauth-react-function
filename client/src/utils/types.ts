@@ -9,3 +9,4 @@ export type IToken = {
     token_type: string;
 }
 export type ISetTokenFunction = (token:IToken)=>{}
+export type IUser = Record<string, any>
