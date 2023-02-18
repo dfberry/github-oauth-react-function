@@ -1,8 +1,8 @@
-import React from "react";
-import { useRouteError } from "react-router-dom";
+import React from 'react'
+import { useRouteError } from 'react-router-dom'
 
 const ErrorPage: React.FC = () => {
-  const error: any = useRouteError();
+  const error: any = useRouteError()
 
   return (
     <div id="error-page">
@@ -12,7 +12,7 @@ const ErrorPage: React.FC = () => {
         <i>{error.statusText || error.message}</i>
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default ErrorPage;
+export default ErrorPage

@@ -1,14 +1,14 @@
-import React from "react";
-import { useMemo } from "react";
+import React from 'react'
+import { useMemo } from 'react'
 
-const sortByAbc = ([a]: any, [b]: any) => a.localeCompare(b);
-const sortByZxy = ([a]: any, [b]: any) => b.localeCompare(a);
-const sortNone = () => 0;
+const sortByAbc = ([a]: any, [b]: any) => a.localeCompare(b)
+const sortByZxy = ([a]: any, [b]: any) => b.localeCompare(a)
+const sortNone = () => 0
 
 type ITableProps = {
-  data: Object;
-  sortFunc: typeof sortByAbc;
-};
+  data: Object
+  sortFunc: typeof sortByAbc
+}
 
 const Table: React.FC<ITableProps> = ({ data, sortFunc }: ITableProps) => {
   return (
@@ -26,13 +26,13 @@ const Table: React.FC<ITableProps> = ({ data, sortFunc }: ITableProps) => {
         </tbody>
       </table>
     </>
-  );
-};
+  )
+}
 
 type IListProps = {
-  data: Object;
-  sortFunc: typeof sortByAbc;
-};
+  data: Object
+  sortFunc: typeof sortByAbc
+}
 const List: React.FC<IListProps> = ({ data, sortFunc }: IListProps) => {
   return (
     <>
@@ -41,22 +41,22 @@ const List: React.FC<IListProps> = ({ data, sortFunc }: IListProps) => {
           .sort(sortFunc)
           .map(([key, value]) => (
             <li key={key}>
-              <span className="key title">{key}:</span>{" "}
+              <span className="key title">{key}:</span>{' '}
               <span className="value property">{String(value)}</span>
             </li>
           ))}
       </ul>
     </>
-  );
-};
+  )
+}
 
 type IObjectAsListProps = {
-  className: string;
-  object: {};
-  sortAbc?: boolean;
-  sortZxy?: boolean;
-  type?: string;
-};
+  className: string
+  object: {}
+  sortAbc?: boolean
+  sortZxy?: boolean
+  type?: string
+}
 
 /**
  * Renders <ul> list with all properties of the given JavaScript object
@@ -65,26 +65,25 @@ type IObjectAsListProps = {
  * @param {boolean} [sortZxy] - properties sorted Z-A when true
  */
 export const ObjectAsList: React.FC<IObjectAsListProps> = ({
-  className = "",
+  className = '',
   object = {},
   sortAbc = false,
   sortZxy = false,
-  type = "table",
+  type = 'table'
 }: IObjectAsListProps) => {
-
   const objectPropsWithSorting = useMemo(() => {
-    const sortFunc = sortAbc ? sortByAbc : sortZxy ? sortByZxy : sortNone;
+    const sortFunc = sortAbc ? sortByAbc : sortZxy ? sortByZxy : sortNone
 
-    if (type === "table") {
-      return <Table data={object} sortFunc={sortFunc} />;
+    if (type === 'table') {
+      return <Table data={object} sortFunc={sortFunc} />
     } else {
-      return <List data={object} sortFunc={sortFunc} />;
+      return <List data={object} sortFunc={sortFunc} />
     }
-  }, [object, sortAbc, sortZxy, type]);
+  }, [object, sortAbc, sortZxy, type])
 
   return (
     <>
       <ul className={`objectAsList ${className}`}>{objectPropsWithSorting}</ul>
     </>
-  );
-};
+  )
+}

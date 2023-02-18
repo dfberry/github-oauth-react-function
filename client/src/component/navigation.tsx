@@ -1,12 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "../App.css";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import '../App.css'
 
-import { IUser } from "../utils/types";
+import { IUser } from '../utils/types'
 
 type INavigationProps = {
-  user: IUser;
-};
+  user: IUser
+}
 
 const Navigation: React.FC<INavigationProps> = ({ user }) => {
   return (
@@ -30,7 +30,7 @@ const Navigation: React.FC<INavigationProps> = ({ user }) => {
         </Link>
       ) : null}
     </div>
-  );
-};
+  )
+}
 
-export default Navigation;
+export default Navigation
