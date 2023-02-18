@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IToken, isToken, IAppToken, IAppTokenHoc } from "../utils/types";
+import { IToken, IAppToken, IAppTokenHoc } from "../utils/types";
 
 // TBD - Need type for token
 export default function useToken(): IAppTokenHoc {
@@ -10,16 +10,16 @@ export default function useToken(): IAppTokenHoc {
     return true;
   };
   // Reset token
-  const resetGitHubToken = (userToken: any) => {
-    // TBD - ask Azure Function to reset token
-    // [POST] /api/token/{token}/reset
-  };
+  // const resetGitHubToken = (userToken: any) => {
+  //   // TBD - ask Azure Function to reset token
+  //   // [POST] /api/token/{token}/reset
+  // };
 
   // Delete token
-  const deleteGitHubToken = (userToken: any) => {
-    // TBD - ask Azure Function to reset token
-    // [DELETE] /api/token/{token}
-  };
+  // const deleteGitHubToken = (userToken: any) => {
+  //   // TBD - ask Azure Function to reset token
+  //   // [DELETE] /api/token/{token}
+  // };
 
   // Get Token from session Storage
   const getToken = () => {

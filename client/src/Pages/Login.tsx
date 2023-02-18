@@ -4,7 +4,6 @@ import { getToken } from "../utils/auth";
 import { IAppConfiguration } from "../utils/config";
 import {
   ISetTokenFunction,
-  IToken,
   IUser,
   IAppToken,
   ITokenReturned,
