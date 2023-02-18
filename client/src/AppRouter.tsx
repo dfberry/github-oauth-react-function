@@ -1,4 +1,4 @@
-import { useRoutes } from 'react-router-dom'
+import { useRoutes, Navigate } from 'react-router-dom'
 import Home from './Pages/HomePublic'
 import Layout from './Pages/Layout'
 import Login from './Pages/Login'
@@ -11,9 +11,14 @@ import { IAppConfiguration } from './utils/config'
 type IAppRouterProps = {
   configuration: IAppConfiguration
 }
+
 function AppRouter({ configuration }: IAppRouterProps) {
   const { setToken } = useToken()
   const { user, setUser } = useUser()
+
+  // TBD - should check token
+  const isAuthenticated = (user && !!user?.name) ? true : false;
+  console.log(`isAuthenticated = ${isAuthenticated}`)
 
   const routes = [
     {
@@ -34,7 +39,7 @@ function AppRouter({ configuration }: IAppRouterProps) {
         },
         {
           path: '/profile',
-          element: <Profile user={user} />
+          element: isAuthenticated ? <Profile user={user} /> : <Navigate to={"/login"} replace />
         },
         { path: '*', element: <Home />, errorElement: <ErrorPage /> }
       ]
