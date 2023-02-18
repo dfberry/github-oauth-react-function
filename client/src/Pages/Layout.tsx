@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import Navigation from "../component/navigation";
-function Layout() {
+const Layout: React.FC = () => {
   return (
     <>
       <Navigation />

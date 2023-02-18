@@ -1,6 +1,8 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import "../App.css"; 
-function Navigation() {
+import "../App.css";
+
+const Navigation: React.FC = () => {
     return (
       <div className="flex-parent-element">
         {/* A "layout route" is a good place to put markup you want to
