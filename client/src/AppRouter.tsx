@@ -13,12 +13,12 @@ type IAppRouterProps = {
 };
 function AppRouter({ configuration }: IAppRouterProps) {
   const { setToken } = useToken();
-  const { user, setUser} = useUser();
+  const { user, setUser } = useUser();
 
   const routes = [
     {
       path: "/",
-      element: <Layout />,
+      element: <Layout user={user} />,
       children: [
         {
           path: "/",
@@ -27,18 +27,26 @@ function AppRouter({ configuration }: IAppRouterProps) {
         {
           path: "/callback",
           element: (
-            <Login setToken={setToken} setUser={setUser} appConfiguration={configuration} />
+            <Login
+              setToken={setToken}
+              setUser={setUser}
+              appConfiguration={configuration}
+            />
           ),
         },
         {
           path: "/login",
           element: (
-            <Login setToken={setToken} setUser={setUser} appConfiguration={configuration} />
+            <Login
+              setToken={setToken}
+              setUser={setUser}
+              appConfiguration={configuration}
+            />
           ),
         },
         {
           path: "/profile",
-          element: <Profile user={user}/>,
+          element: <Profile user={user} />,
         },
         { path: "*", element: <Home />, errorElement: <ErrorPage /> },
       ],
