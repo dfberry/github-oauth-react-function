@@ -1,16 +1,35 @@
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 import { getToken } from "../shared/github-http";
 import { getUser } from "../shared/github-octokit";
+import { isConfigured, clientIdGitHub } from "../shared/config";
+
+const isAppConfigured = isConfigured();
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
   try {
-    const code: string = req?.body?.code ? (req?.body?.code as string) : null;
 
-    if (!code) throw Error("Required param `code` not found");
-    context.log(`code ${code}`);
+    if(!isAppConfigured) {
+      // easier to find in runtime logs than startup logs
+      throw Error("App isn't configured correctly. Check environment variables.")
+    }
+
+    const code: string = req?.body?.code ? (req?.body?.code as string) : null;
+    if(!code){
+      throw Error("required param `code` not found");
+    }
+
+    const clientId: string = req?.body?.clientId ? (req?.body?.clientId as string) : null;
+    if(!clientId){
+      throw Error("required param `clientId` not found");
+    }
+
+    if(clientId !== clientIdGitHub){
+      throw Error("incorrect GitHub clientId");
+    }
+
 
     const { token, headers } = await getToken(code);
     const { user } = await getUser(token.access_token);
@@ -53,7 +72,7 @@ const httpTrigger: AzureFunction = async function (
     context.res = {
       status: 500,
       body: {
-        error: err.message,
+        error: "Server error: " + err.message,
       },
     };
   }

@@ -9,7 +9,8 @@ export async function getToken(
   if (!authentication.serverUrlBase) throw Error('missing url')
 
   const body = {
-    code
+    code,
+    clientId: authentication.clientId
   }
 
   const options = {
@@ -18,7 +19,8 @@ export async function getToken(
     headers: { 'Content-Type': 'application/json' }
   }
 
-  const response = await fetch(`${authentication?.serverUrlBase}/api/token`, options)
+  const uri = `${authentication?.serverUrlBase}/api/token`
+  const response = await fetch(uri, options)
 
   if (response.ok) {
     const data = await response.json()

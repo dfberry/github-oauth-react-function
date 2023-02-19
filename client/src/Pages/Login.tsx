@@ -21,6 +21,10 @@ const Login: React.FC<ILoginProps> = ({ setToken, appConfiguration, setUser }) =
       getToken(code, appConfiguration)
         .then((data) => {
           const tokenReturned: ITokenReturned = data
+
+          if (!tokenReturned?.token?.access_token || !tokenReturned?.user?.name) {
+            throw Error('Server successfully returned without token')
+          }
           const currentToken = tokenReturned.token
 
           // coming from GitHub so must be valid
@@ -32,7 +36,15 @@ const Login: React.FC<ILoginProps> = ({ setToken, appConfiguration, setUser }) =
           navigate('/profile', { state: data })
         })
         .catch((err) => {
-          console.log(`an error occured`)
+          console.log(`Login:can't exchange code for token`)
+          console.log(`err.message = ${err.message}`)
+
+          if (err.message.includes('Failed to fetch')) {
+            navigate('/error', {
+              state: Error('Login: failed to fetch from server. Is server running?')
+            })
+          }
+          navigate('/error', { state: err })
         })
     }
   }, [appConfiguration, navigate, setToken, setUser])
